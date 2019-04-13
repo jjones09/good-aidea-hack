@@ -1,19 +1,14 @@
 import React from 'react';
-
 import Webcam from 'react-webcam';
-import * as mobilenet from '@tensorflow-models/mobilenet';
+
+import classifier from '../classifier';
 
 const Learn = () => {
     let net;
 
     const classifyFeed = async () => {
-        console.log('classifying...');
-        net = await mobilenet.load();
-
-        const imgEl = document.getElementsByClassName('CamFeed')[0];
-        console.log (imgEl);
-        const result = await net.classify(imgEl);
-        console.log(result);
+        const predictionMessage = await classifier.predict(document.getElementsByClassName('CamFeed')[0]);
+        console.log(predictionMessage);
     }
 
     return <div>
