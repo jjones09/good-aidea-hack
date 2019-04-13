@@ -4,8 +4,8 @@ import './App.css';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 import Home from './pages/Home';
-import Learn from './pages/Learn';
-import Train from './pages/Train';
+import Learn from './pages/Learn/Learn';
+import Train from './pages/Train/Train';
 
 const App = () => {
 
@@ -16,7 +16,7 @@ const App = () => {
             <Link to='/train-model'>Train Model</Link>
             <Link to='/learn'>Learn</Link>
           </header>
-          <div>
+          <div className='AppContent'>
             <Route path='/' exact component={Home}/>
             <Route path="/train-model" exact component={Train} />
             <Route path="/learn" exact component={Learn} />

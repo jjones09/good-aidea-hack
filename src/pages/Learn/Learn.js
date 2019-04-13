@@ -1,7 +1,9 @@
 import React from 'react';
 import Webcam from 'react-webcam';
 
-import classifier from '../classifier';
+import Button from '../../components/Button/Button';
+
+import classifier from '../../classifier';
 
 const Learn = () => {
 
@@ -17,7 +19,7 @@ const Learn = () => {
             height={500}
             screenshotFormat="image/jpeg"
             width={500} />
-        <button onClick={classifyFeed}>Classify</button>
+        <Button onClick={classifyFeed}>Classify</Button>
     </div>;
 }
 

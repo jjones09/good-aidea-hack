@@ -1,5 +1,8 @@
+import * as tf from '@tensorflow/tfjs';
 import * as mobilenet from '@tensorflow-models/mobilenet';
 import * as knnClassifier from '@tensorflow-models/knn-classifier';
+
+import classifierDataset from './data/classifier';
 
 const classifier = knnClassifier.create();
 let net;
@@ -10,13 +13,36 @@ const setupNetwork = async () => {
 
 const alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
 
-const addExample = (cam, letter) => {
+const toDatasetObject = async dataset => {
+    const result = await Promise.all(
+      Object.keys(dataset).map(async key => {
+        const data = await dataset[key].data();
+  
+        return {
+          classId: parseInt(key),
+          data: Array.from(data),
+          shape: dataset[key].shape
+        };
+    }));
+    console.log(result);
+    return result;
+  };
+
+const fromDatasetObject = datasetObject => {
+    console.log(datasetObject)
+    return Object.keys(datasetObject).map((key) => {
+        console.log(datasetObject[key]);
+        return tf.tensor2d(datasetObject[key].strides, datasetObject[key].shape);
+    });
+}
+
+const addExample = (cam, letterIndex) => {
 
     console.log('Adding example');
 
     const activation = net.infer(cam, 'conv_preds');
 
-    classifier.addExample(activation, alphabet.indexOf(letter));
+    classifier.addExample(activation, parseInt(letterIndex));
 };
 
 const predict = async (cam) => {
@@ -27,6 +53,16 @@ const predict = async (cam) => {
       return `prediction: ${alphabet[result.classIndex]}\nprobability: ${result.confidences[result.classIndex]}`;
 }
 
-setupNetwork();
+const outputClassifier = () => {
+    return toDatasetObject(classifier.getClassifierDataset());
+}
 
-export default { addExample, predict };
+const reloadClassifier = () => {
+    // console.log(classifier);
+    classifier.setClassifierDataset(fromDatasetObject(classifierDataset));
+}
+
+setupNetwork();
+// reloadClassifier();
+
+export default { addExample, predict, outputClassifier, reloadClassifier };

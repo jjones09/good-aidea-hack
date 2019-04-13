@@ -1,11 +1,3 @@
-.TrainingPage {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    width: 80vw;
-    margin: 0 auto;
-}
-
 .TrainingSelector {
     display: flex;
     flex-direction: row;
@@ -20,8 +12,16 @@
 
 select {
     font-size: 1.6em;
+    padding: 5px;
 }
 
 .CamFeed {
     margin: 0 auto;
+}
+
+.ClassifierAdmin {
+    margin: 5vh 0;
+    padding: 0 25vw;
+    display: flex;
+    flex-direction: row;
 }
