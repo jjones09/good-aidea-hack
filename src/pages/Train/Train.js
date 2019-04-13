@@ -17,8 +17,9 @@ const Train = () => {
         classifier.addExample(document.getElementsByClassName('CamFeed')[0], selectedLetterIndex)
     }
 
-    const saveClassifier = () => {
-        const data = JSON.stringify(classifier.outputClassifier(), null, 2);
+    const saveClassifier = async () => {
+        const classifierData = await classifier.outputClassifier();
+        const data = JSON.stringify(classifierData);
         saveAs(new Blob([data], {type: "application/json"}), 'classifier.json');
     }
 

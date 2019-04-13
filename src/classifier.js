@@ -13,26 +13,11 @@ const setupNetwork = async () => {
 
 const alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
 
-const toDatasetObject = async dataset => {
-    const result = await Promise.all(
-      Object.keys(dataset).map(async key => {
-        const data = await dataset[key].data();
-  
-        return {
-          classId: parseInt(key),
-          data: Array.from(data),
-          shape: dataset[key].shape
-        };
-    }));
-    console.log(result);
-    return result;
-  };
-
 const fromDatasetObject = datasetObject => {
     console.log(datasetObject)
     return Object.keys(datasetObject).map((key) => {
         console.log(datasetObject[key]);
-        return tf.tensor2d(datasetObject[key].strides, datasetObject[key].shape);
+        return tf.tensor2d(datasetObject[key].data, datasetObject[key].shape);
     });
 }
 
@@ -53,16 +38,25 @@ const predict = async (cam) => {
       return `prediction: ${alphabet[result.classIndex]}\nprobability: ${result.confidences[result.classIndex]}`;
 }
 
-const outputClassifier = () => {
-    return toDatasetObject(classifier.getClassifierDataset());
+const outputClassifier = async () => {
+    const results = [];
+    const dataset = classifier.getClassifierDataset();
+    for await (const key of Object.keys(dataset)) {
+        const data = await dataset[key].data();
+        results.push({
+            classId: parseInt(key),
+            data: Array.from(data),
+            shape: dataset[key].shape
+        });
+    }
+    return results;
 }
 
 const reloadClassifier = () => {
-    // console.log(classifier);
     classifier.setClassifierDataset(fromDatasetObject(classifierDataset));
 }
 
 setupNetwork();
-// reloadClassifier();
+reloadClassifier();
 
 export default { addExample, predict, outputClassifier, reloadClassifier };
