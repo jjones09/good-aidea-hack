@@ -4,7 +4,6 @@ import Webcam from 'react-webcam';
 import classifier from '../classifier';
 
 const Learn = () => {
-    let net;
 
     const classifyFeed = async () => {
         const predictionMessage = await classifier.predict(document.getElementsByClassName('CamFeed')[0]);

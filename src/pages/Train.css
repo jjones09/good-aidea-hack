@@ -1,0 +1,27 @@
+.TrainingPage {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    width: 80vw;
+    margin: 0 auto;
+}
+
+.TrainingSelector {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 5vh 5vw;
+}
+
+.TrainingSelector > * {
+    margin: 0 1vw;
+}
+
+select {
+    font-size: 1.6em;
+}
+
+.CamFeed {
+    margin: 0 auto;
+}
