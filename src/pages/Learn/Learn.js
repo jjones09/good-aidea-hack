@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import Webcam from 'react-webcam';
 
 import Button from '../../components/Button/Button';
@@ -16,11 +16,17 @@ const Learn = () => {
     const [fullNameIndex, setFullNameIndex] = useState(0);
 
     const classifyFeed = async () => {
-        const predictionObj = await classifier.predict(document.getElementsByClassName('CamFeed')[0]);
-        console.log(predictionObj);
-        if (predictionObj.prediction === name[letterIndex].toUpperCase() &&
-            predictionObj.probability > 0.8) {
+
+        let correctSign = false;
+
+        while (correctSign === false) {
+            const predictionObj = await classifier.predict(document.getElementsByClassName('CamFeed')[0]);
+            console.log(predictionObj);
+            if (predictionObj.prediction === name[letterIndex].toUpperCase() &&
+                predictionObj.probability > 0.8) {
                 setLetterIndex(letterIndex + 1);
+                correctSign = true;
+            }
         }
     }
 
@@ -29,7 +35,7 @@ const Learn = () => {
         console.log(predictionObj);
         if (predictionObj.prediction === name[fullNameIndex].toUpperCase() &&
             predictionObj.probability > 0.8) {
-                setFullNameIndex(letterIndex + 1);
+            setFullNameIndex(letterIndex + 1);
         }
     }
 
@@ -59,48 +65,49 @@ const Learn = () => {
     const buildFullName = () => {
         return <div>{
             Array.from(name).map((letter, key) => {
-                console.log(key);
-                console.log(fullNameIndex);
-            return <span
-                key={`Letter-${key}`}
-                className={fullNameIndex > key ? 'SignChar' : 'PlainChar'}>
+                    console.log(key);
+                    console.log(fullNameIndex);
+                    return <span
+                        key={`Letter-${key}`}
+                        className={fullNameIndex > key ? 'SignChar' : 'PlainChar'}>
                     {letter.toUpperCase()}
-            </span>}
-        )}</div>
+            </span>
+                }
+            )}</div>
     }
 
     const getLearningContent = () => {
         return letterIndex < name.length ?
-        <div>
-            {getCurrentlyLearning()}
-            <Webcam
-                className='CamFeed'
-                audio={false}
-                height={500}
-                screenshotFormat="image/jpeg"
-                width={500} />
-            <Button onClick={classifyFeed}>Classify</Button>
-            <Button onClick={goBack}>Back</Button>
-        </div> :
-        <div>
-            {buildFullName()}
-            <Webcam
-                className='CamFeed'
-                audio={false}
-                height={500}
-                screenshotFormat="image/jpeg"
-                width={500} />
-            <Button onClick={classifyFeedForFullName}>Classify</Button>
-            <Button onClick={goBack}>Back</Button>
-        </div>
+            <div>
+                {getCurrentlyLearning()}
+                <Webcam
+                    className='CamFeed'
+                    audio={false}
+                    height={500}
+                    screenshotFormat="image/jpeg"
+                    width={500}/>
+                <Button onClick={classifyFeed}>Classify</Button>
+                <Button onClick={goBack}>Back</Button>
+            </div> :
+            <div>
+                {buildFullName()}
+                <Webcam
+                    className='CamFeed'
+                    audio={false}
+                    height={500}
+                    screenshotFormat="image/jpeg"
+                    width={500}/>
+                <Button onClick={classifyFeedForFullName}>Classify</Button>
+                <Button onClick={goBack}>Back</Button>
+            </div>
     };
 
     return !!name && learningName ?
-    <div>{getLearningContent()}</div> :
-    <div>
-        <NameEntry name={name} onChange={setName} />
-        {getLearnButton()}
-    </div>;
+        <div>{getLearningContent()}</div> :
+        <div>
+            <NameEntry name={name} onChange={setName}/>
+            {getLearnButton()}
+        </div>;
 }
 
 export default Learn;
