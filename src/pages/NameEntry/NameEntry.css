@@ -1,0 +1,29 @@
+@font-face {
+    font-family: 'SignFont';
+    src: url('../../data/font/BDAFingerspellingNormal.woff2') format('woff2'), /* Super Modern Browsers */
+         url('../../data/font/BDAFingerspellingNormal.woff') format('woff'), /* Pretty Modern Browsers */
+         url('../../data/font/2381267.ttf')  format('truetype'), /* Safari, Android, iOS */
+         url('../../data/font/BDAFingerspellingNormal.svg') format('svg'); /* Legacy iOS */
+  }
+
+.NameBox {
+    resize: none;
+    padding: 10px;
+    font-size: 1.8em;
+    text-align: center;
+    border: 1px solid black;
+}
+
+.NameBox:focus {
+    outline: none;
+}
+
+.NamePrompt {
+    font-size: 2.8em;
+}
+
+.NameSign {
+    font-family: SignFont;
+    font-size: 5em;
+    letter-spacing: 0.5em;
+}
