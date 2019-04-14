@@ -23,3 +23,8 @@
     width: 25vw;
     margin: 0 auto;
 }
+
+.SuccessToast {
+    background-color: green;
+    color: white;
+}
